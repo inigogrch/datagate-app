@@ -12,7 +12,9 @@ npm install
 
 # 2. Set up environment variables
 cp .env.example .env.local
-# Edit .env.local with your API keys
+# Edit .env.local with your API keys:
+# - OPENAI_API_KEY=your-openai-api-key (required for chat)
+# - Add your Supabase credentials
 
 # 3. Set up database
 # Run the SQL from supabase/migrations/001_initial_schema.sql in Supabase
@@ -46,6 +48,11 @@ Visit [http://localhost:3000](http://localhost:3000) to see your feed!
 - ✅ Relevance ranking with recency boost
 - ✅ User feedback system (👍/👎)
 - ✅ Dark mode UI optimized for developers
+- ✅ **AI Chat Assistant** - Real-time streaming chat powered by GPT-4
+  - Ask questions about frameworks, tools, and best practices
+  - Get instant responses with code examples
+  - Streaming responses with auto-scrolling
+  - Beautiful dark mode interface
 
 ## 📁 Project Structure
 
@@ -77,9 +84,28 @@ datagate-app/
 - `npm run test:setup` - Verify your configuration
 - `npm run db:setup` - Show database setup instructions
 
+### AI Chat Setup
+
+The AI Chat feature uses the Vercel AI SDK with OpenAI's GPT-4 model:
+
+1. **Get an OpenAI API Key**: Sign up at [platform.openai.com](https://platform.openai.com)
+2. **Add to Environment**: Set `OPENAI_API_KEY` in your `.env.local`
+3. **Navigate to Chat**: Visit `/chat` or click the Chat link in the sidebar
+4. **Start Chatting**: Ask questions about tech, frameworks, or development practices
+
+The chat uses:
+- **Edge Runtime**: For optimal streaming performance
+- **Vercel AI SDK**: For seamless streaming and error handling
+- **GPT-4**: For high-quality, up-to-date responses
+
 ### Environment Variables
 
-See [SETUP.md](./SETUP.md) for detailed configuration instructions.
+Required for chat functionality:
+```bash
+OPENAI_API_KEY=sk-...  # Your OpenAI API key
+```
+
+See [SETUP.md](./SETUP.md) for all configuration options.
 
 ## 🗺️ Roadmap
 

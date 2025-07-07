@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { FeedResponse } from '@/lib/types'
 
 async function fetchFeed(page: number = 1): Promise<FeedResponse> {
-  const response = await fetch(`/api/v1/feed?page=${page}&limit=20`)
+  const response = await fetch(`/api/feed?page=${page}&limit=20`)
   if (!response.ok) {
     throw new Error('Failed to fetch feed')
   }
@@ -12,7 +12,7 @@ async function fetchFeed(page: number = 1): Promise<FeedResponse> {
 }
 
 async function submitFeedback(storyId: string, score: -1 | 1): Promise<void> {
-  const response = await fetch('/api/v1/feedback', {
+  const response = await fetch('/api/feedback', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
