@@ -19,7 +19,7 @@ We’ve finalised the 3‑row content taxonomy and the canonical `ParsedItem` DT
 |                        | OpenAI Official Blog                         | RSS              | `rssAdapter('openai')`                | 60 min        |
 |                        | Microsoft Excel & Power BI Blog              | RSS              | `rssAdapter('m365Excel')`             | 120 min       |
 |                        | PyPI Top‑Package releases (pandas, numpy, …) | per‑package Atom | `pypiAdapter()`                       | 180 min       |
-| **Research Updates**   | Google AI Research Blog                      | RSS              | `rssAdapter('googleAI')`              | 60 min        |
+| **Research Updates**   | Google AI Research Blog                      | Web Scrape       | `rssAdapter('googleAI')`              | 60 min        |
 |                        | Hugging Face Model Releases                  | JSON API         | `huggingfaceAdapter()`                | 30 min        |
 |                        | arXiv (cs.AI, cs.LG, cs.CL, stat.ML)         | RSS              | `arxivAdapter(['cs.AI', …])`          | 1440 min      |
 |                        | MIT Technology Review – *The Download*       | RSS              | `rssAdapter('mitTR')`                 | 720 min       |

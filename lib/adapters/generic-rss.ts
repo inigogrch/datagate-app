@@ -27,7 +27,16 @@ export async function genericRssAdapter(sourceConfig: SourceConfig): Promise<Par
 
     for (const item of feed.items) {
       try {
-        const title = item.title?.trim() || (item.description?.substring(0, 70) ?? 'Untitled')
+        let title = item.title?.trim() || (item.description?.substring(0, 70) ?? 'Untitled')
+        
+        // Decode HTML entities in title
+        title = title
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/&nbsp;/g, ' ')
         const link = item.link?.trim() ?? ''
         if (!link) throw new Error('Missing link')
         
@@ -35,11 +44,34 @@ export async function genericRssAdapter(sourceConfig: SourceConfig): Promise<Par
         const publishedAt = DateTime.fromRFC2822(publishedAtRaw).toJSDate()
         if (!publishedAt || Number.isNaN(+publishedAt)) throw new Error(`Bad pubDate: "${publishedAtRaw}"`)
 
+        // Enhanced content extraction with HTML entity decoding
         const html = item['content:encoded'] ?? item.content ?? item.description ?? ''
-        const body = td.turndown(html).slice(0, 50_000)
+        let body = td.turndown(html).slice(0, 50_000)
+        
+        // Decode HTML entities
+        body = body
+          .replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/&nbsp;/g, ' ')
+        
+        // If content is very short, use description as fallback
+        if (body.length < 50 && item.description && item.description.length > body.length) {
+          body = item.description.trim()
+        }
+        
+        // Ensure we have some content
+        if (!body.trim()) {
+          body = `${title} - Read more at ${link}`
+        }
 
         // External ID logic: prefer GUID, fallback to link hash
-        let externalId = item.guid?.value ?? item.guid ?? ''
+        let externalId = ''
+        if (item.guid) {
+          externalId = typeof item.guid === 'string' ? item.guid : item.guid.value
+        }
         if (!externalId) {
           externalId = createHash('sha256').update(link).digest('hex')
         }
