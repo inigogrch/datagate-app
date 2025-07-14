@@ -1,7 +1,6 @@
-# DataGate - dbt Release Radar (Slice 1)
+# DataGate 
 
-**DataGate** is an AI-powered feed aggregator that keeps data professionals updated with the latest releases and updates from the data engineering ecosystem. This is Slice 1, focused on dbt Labs content.
-
+**DataGate** is an AI-powered feed aggregator that keeps data professionals updated with the latest releases and updates from the data professional ecosystem.
 ## 🚀 Quick Start
 
 ```bash
