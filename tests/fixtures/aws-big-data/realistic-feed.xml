@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>AWS Big Data Blog</title>
+    <link>https://aws.amazon.com/blogs/big-data/</link>
+    <description>The latest AWS Big Data news, deep dives, tutorials, and announcements</description>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 09 Jul 2025 10:00:00 GMT</lastBuildDate>
+    
+    <!-- Real-world AWS blog post structure -->
+    <item>
+      <title>Develop and monitor a Spark application using existing data in Amazon S3 with Amazon SageMaker Unified Studio</title>
+      <link>https://aws.amazon.com/blogs/big-data/develop-and-monitor-a-spark-application-using-existing-data-in-amazon-s3-with-amazon-sagemaker-unified-studio/</link>
+      <description>Organizations face significant challenges managing their big data analytics workloads. Learn how to use SageMaker Unified Studio 🚀 to develop and monitor Spark applications.</description>
+      <content:encoded><![CDATA[
+        <p>Organizations face significant challenges managing their big data analytics workloads. Data teams struggle with fragmented development environments, complex resource management, inconsistent monitoring, and cumbersome manual scheduling processes.</p>
+        
+        <h2>Solution overview</h2>
+        <p>This solution uses SageMaker Unified Studio to execute and oversee a Spark application, highlighting its integrated capabilities:</p>
+        
+        <ol>
+          <li>Create an <strong>EMR Serverless</strong> compute environment for interactive applications using SageMaker Unified Studio.</li>
+          <li>Create and configure a Spark application.</li>
+          <li>Use TPC-DS data to build and run the Spark application using a <em>Jupyter notebook</em> in SageMaker Unified Studio.</li>
+          <li>Monitor application performance and schedule recurring runs with Amazon MWAA integrated.</li>
+        </ol>
+        
+        <h3>Prerequisites</h3>
+        <ul>
+          <li><strong>An AWS account</strong> – If you don't have an account, you can <a href="https://aws.amazon.com/">create one</a>.</li>
+          <li><strong>A SageMaker Unified Studio domain</strong> – For instructions, refer to Create an Amazon SageMaker Unified Studio domain.</li>
+        </ul>
+        
+        <p>Run the following code to develop your Spark application:</p>
+        <pre><code class="language-python">spark.read.parquet("s3://blogpost-sparkoneks-us-east-1/blog/BLOG_TPCDS-TEST-3T-partitioned/store/").createOrReplaceTempView("store")
+
+# Load additional datasets
+spark.read.parquet("s3://bucket/item/").createOrReplaceTempView("item")
+spark.read.parquet("s3://bucket/store_sales/").createOrReplaceTempView("store_sales")</code></pre>
+        
+        <blockquote>
+          <p><strong>Note:</strong> Make sure you have the <code>emr-serverless:GetDashboardForJobRun</code> IAM permissions to generate the dashboard link.</p>
+        </blockquote>
+        
+        <h2>Monitor jobs in the Spark UI</h2>
+        <p>On the <strong>Jobs</strong> tab of the Spark UI, you can see:</p>
+        <ul>
+          <li>The action that triggered the job</li>
+          <li>The time it took (for this example, 41 seconds, but timing will vary)</li>
+          <li>The number of stages and tasks</li>
+        </ul>
+        
+        <p>Some special characters: "smart quotes", em—dash, and non-breaking spaces&nbsp;here.</p>
+      ]]></content:encoded>
+      <pubDate>Tue, 09 Jul 2025 09:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://aws.amazon.com/blogs/big-data/develop-and-monitor-a-spark-application-using-existing-data-in-amazon-s3-with-amazon-sagemaker-unified-studio/</guid>
+      <category>Amazon SageMaker</category>
+      <category>Analytics</category>
+      <category>Technical How-to</category>
+      <dc:creator>Amit Maindola and Abhilash Nagilla</dc:creator>
+    </item>
+    
+    <!-- Edge case: Missing title, should use description -->
+    <item>
+      <link>https://aws.amazon.com/blogs/big-data/no-title-post/</link>
+      <description>This description should become the title since the title element is completely missing from this item</description>
+      <content:encoded><![CDATA[<p>Content with no title element.</p>]]></content:encoded>
+      <pubDate>Mon, 08 Jul 2025 15:30:00 GMT</pubDate>
+      <guid>no-title-guid-12345</guid>
+    </item>
+    
+    <!-- Edge case: Weird GUID structure -->
+    <item>
+      <title>Post with Complex GUID 🔧</title>
+      <link>https://aws.amazon.com/blogs/big-data/complex-guid/</link>
+      <description>Testing complex GUID handling with emojis and special chars</description>
+      <content:encoded><![CDATA[<p>Content with emojis 🚀 and special characters: é, ñ, 中文</p>]]></content:encoded>
+      <pubDate>Mon, 08 Jul 2025 14:00:00 GMT</pubDate>
+      <guid isPermaLink="false">tag:aws.amazon.com,2025-07-08:big-data/complex-guid-äöü-123</guid>
+    </item>
+    
+    <!-- Edge case: Very long description that should be truncated -->
+    <item>
+      <title>Post with Extremely Long Content</title>
+      <link>https://aws.amazon.com/blogs/big-data/long-content/</link>
+      <description>Short description</description>
+      <content:encoded><![CDATA[
+        <p>This is a very long post that would normally exceed our 50,000 character limit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Repeated content to make it very long... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      ]]></content:encoded>
+      <pubDate>Mon, 08 Jul 2025 13:00:00 GMT</pubDate>
+      <guid>long-content-guid</guid>
+    </item>
+    
+  </channel>
+</rss>

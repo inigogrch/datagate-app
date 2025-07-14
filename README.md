@@ -132,3 +132,53 @@ Proprietary - All rights reserved
 ---
 
 Built with ❤️ for data professionals who need to stay ahead of the curve.
+
+## Hybrid Tagging System
+
+DataGate uses a sophisticated hybrid tagging system that combines:
+
+### 1. **Heuristic Tagging** (Fast & Precise)
+- Keyword matching with word boundaries
+- Regex pattern detection (version numbers, funding amounts, etc.)
+- Domain-specific rules defined in `lib/adapters/config/tagging-rules.json`
+- Sub-millisecond performance
+
+### 2. **Semantic Tagging** (Intelligent & Context-Aware)
+- OpenAI embeddings (text-embedding-3-small model)
+- Cosine similarity matching against tag prototypes
+- Captures semantic meaning beyond keywords
+- Handles synonyms and related concepts
+
+### Key Features:
+- **No rigid categories** - Dynamic, content-based tags
+- **Personalization-ready** - Tags enable user interest matching
+- **Performance optimized** - Memoization, batch processing
+- **Fallback handling** - Gracefully degrades to heuristic-only
+
+### Running Ingestion
+
+```bash
+# Run enhanced ingestion with embeddings (all sources)
+pnpm run ingest:enhanced
+
+# Dry run to preview without inserting
+pnpm run ingest:enhanced -- --dry-run
+
+# Run specific source
+pnpm run ingest:enhanced -- --source arxiv
+
+# Disable semantic tagging (heuristic only)
+pnpm run ingest:enhanced -- --no-semantic
+
+# Test the hybrid tagging system
+pnpm run test:hybrid
+```
+
+### Database Schema
+
+The system stores:
+- `tags[]` - Array of content-based tags
+- `tagging_metadata` - Processing details and metrics
+- `embedding` - Vector embedding for similarity search
+- `embedding_model` - Model used (text-embedding-3-small)
+- `embedding_generated_at` - Timestamp of generation

@@ -1,0 +1,194 @@
+{
+  "version": "3.3-cleaned-ambiguity",
+  "confidence_threshold": 0.2,
+  "production_mode": true,
+  "max_tags_per_story": 6,
+  "tag_categories": {
+    "technologies": {
+      "description": "Programming languages, frameworks, tools, platforms",
+      "tags": {
+        "python": ["python", "py", "pip", "pypi", "django", "flask", "pandas", "numpy"],
+        "javascript": ["javascript", "js", "node", "nodejs", "npm", "yarn"],
+        "typescript": ["typescript", "typescript language", "tsc compiler"],
+        "react": ["react", "reactjs", "jsx", "next.js", "nextjs"],
+        "vue": ["vue", "vuejs", "nuxt"],
+        "angular": ["angular", "angularjs"],
+        "rust": ["rust", "cargo", "rustc"],
+        "go": ["golang", "go language"],
+        "tensorflow": ["tensorflow", "tf", "keras"],
+        "pytorch": ["pytorch", "torch"],
+        "docker": ["docker", "container", "containerization"],
+        "kubernetes": ["kubernetes", "k8s", "kubectl"],
+        "aws": ["aws", "amazon web services", "ec2", "s3", "lambda"],
+        "azure": ["azure", "microsoft azure"],
+        "gcp": ["gcp", "google cloud", "bigquery"],
+        "api": ["api", "rest", "graphql", "endpoint", "integration"],
+        "graphql": ["graphql", "apollo", "relay"],
+        "database": ["database", "sql", "nosql", "postgresql", "mongodb", "redis"],
+        "spark": ["spark", "pyspark", "databricks"],
+        "hadoop": ["hadoop", "mapreduce", "hdfs"],
+        "dbt": ["dbt", "dbt labs"],
+        "snowflake": ["snowflake"],
+        "airflow": ["airflow"],
+        "kafka": ["kafka", "apache kafka"],
+        "terraform": ["terraform"],
+        "helm": ["helm"],
+        "ansible": ["ansible"],
+        "pulumi": ["pulumi"],
+        "algorithms": ["algorithm", "algorithmic", "computational complexity", "optimization algorithm"],
+        "data-analysis": ["data analysis", "analytics", "statistical analysis", "data mining"],
+        "sensors": ["sensor", "sensing", "measurement", "detection", "monitoring"],
+        "imaging": ["imaging", "microscopy", "visualization", "image processing"],
+        "hardware": ["hardware", "chip", "processor", "semiconductor", "circuit"],
+        "networking": ["networking", "internet", "protocol", "communication", "distributed"],
+        "cloud-computing": ["cloud computing", "distributed computing", "parallel processing"],
+        "quantum-computing": ["quantum computing", "quantum", "qubit", "quantum algorithm"]
+      }
+    },
+    "ai_ml": {
+      "description": "Artificial Intelligence and Machine Learning",
+      "tags": {
+        "artificial-intelligence": ["artificial intelligence", "ai", "intelligent systems", "cognitive", "autonomous"],
+        "machine-learning": ["machine learning", "ml", "statistical learning", "predictive modeling"],
+        "deep-learning": ["deep learning", "neural networks", "deep neural", "convolutional", "recurrent"],
+        "natural-language-processing": ["nlp", "natural language", "text processing", "language models", "computational linguistics"],
+        "computer-vision": ["computer vision", "image recognition", "visual processing", "object detection", "image analysis"],
+        "reinforcement-learning": ["reinforcement learning", "rl", "reward learning", "policy gradient"],
+        "neural-networks": ["neural networks", "neurons", "backpropagation", "perceptron", "multilayer"],
+        "transformers": ["transformer", "attention mechanism", "bert", "gpt", "llm", "large language model"],
+        "robotics": ["robotics", "robot", "autonomous systems", "manipulation", "navigation", "sensor fusion"]
+      }
+    },
+    "sciences": {
+      "description": "Scientific disciplines and domains",
+      "tags": {
+        "computer-science": ["computer science", "cs", "algorithms", "data structures", "computational"],
+        "biomedical-engineering": ["biomedical", "medical engineering", "healthcare technology", "medical devices"],
+        "materials-science": ["materials science", "nanotechnology", "materials engineering", "polymer"],
+        "climate-science": ["climate", "environmental science", "sustainability", "carbon", "renewable energy"],
+        "physics": ["physics", "quantum", "photonics", "optics", "electromagnetic"],
+        "chemistry": ["chemistry", "chemical engineering", "catalysis", "synthesis"],
+        "biology": ["biology", "molecular biology", "genetics", "genomics", "proteomics", "biotechnology"],
+        "neuroscience": ["neuroscience", "brain", "neural", "cognitive science", "neurological"],
+        "mathematics": ["mathematics", "mathematical", "optimization", "statistics", "probability"],
+        "engineering": ["engineering", "mechanical", "electrical", "civil", "aerospace"]
+      }
+    },
+    "domains": {
+      "description": "Application domains and specializations",
+      "tags": {
+        "data-science": ["data science", "analytics", "data analysis", "statistics", "visualization"],
+        "web-development": ["web development", "frontend", "backend", "fullstack", "web app"],
+        "mobile-development": ["mobile", "ios", "android", "app development", "flutter", "react native"],
+        "devops": ["devops", "ci/cd", "deployment", "infrastructure", "automation"],
+        "security": ["security", "cybersecurity", "encryption", "authentication", "vulnerability", "threat detection"],
+        "privacy": ["privacy", "gdpr", "data protection", "consent", "personal data"],
+        "performance": ["performance", "optimization", "speed", "latency", "scalability"],
+        "cloud": ["cloud", "serverless", "microservices", "distributed systems"],
+        "quantum": ["quantum computing", "qubit", "quantum", "quantum algorithm"],
+        "healthcare": ["healthcare", "medical", "clinical", "diagnosis", "treatment", "patient"],
+        "autonomous-vehicles": ["autonomous vehicles", "self-driving", "automotive", "transportation"],
+        "energy": ["energy", "power", "electricity", "renewable", "solar", "wind", "battery"],
+        "manufacturing": ["manufacturing", "production", "industrial", "automation", "quality control"],
+        "finance": ["finance", "financial", "trading", "risk management", "banking"],
+        "fintech": ["fintech", "financial technology", "digital payments", "neobank", "robo-advisor"],
+        "blockchain": ["blockchain", "crypto", "cryptocurrency", "bitcoin", "ethereum", "defi", "web3"],
+        "education": ["education", "learning", "teaching", "pedagogy", "educational technology"],
+        "agriculture": ["agriculture", "farming", "crop", "food security", "precision agriculture"],
+        "telecommunications": ["telecommunications", "network", "wireless", "communication", "5g"],
+        "social-impact": ["social impact", "society", "ethics", "policy"],
+        "biotech": ["biotech", "bioinformatics", "genomics"],
+        "governance": ["governance", "compliance", "regulation", "policy", "legal"],
+        "data-governance": ["data governance", "data compliance", "gdpr", "ccpa", "data quality"]
+      }
+    },
+    "content_types": {
+      "description": "Type of content based on intent and format",
+      "tags": {
+        "tutorial": ["tutorial", "guide", "how-to", "walkthrough", "step-by-step"],
+        "announcement": ["announce", "announcing", "release", "launch", "introducing"],
+        "research": ["research", "study", "investigation", "analysis", "experiment"],
+        "experiment": ["experiment", "experimental", "trial", "testing", "validation"],
+        "simulation": ["simulation", "modeling", "computational model", "simulation-based"],
+        "theoretical": ["theoretical", "theory", "mathematical model", "conceptual"],
+        "empirical": ["empirical", "data-driven", "observational", "evidence-based"],
+        "survey": ["survey", "systematic review", "meta-analysis"],
+        "news": ["news", "breaking"],
+        "review": ["review", "comparison", "benchmark", "evaluation"],
+        "documentation": ["documentation", "docs", "reference", "manual"],
+        "case-study": ["case study", "use case", "real-world example"],
+        "interview": ["interview", "qa", "conversation"],
+        "opinion": ["opinion", "perspective", "viewpoint"],
+        "faq": ["faq", "frequently asked questions"],
+        "proof-of-concept": ["proof of concept", "prototype", "demonstration", "pilot study"]
+      }
+    },
+    "companies": {
+      "description": "Companies and organizations frequently mentioned",
+      "tags": {
+        "openai": ["openai", "chatgpt", "gpt"],
+        "microsoft": ["microsoft", "azure", "office", "windows"],
+        "google": ["google", "alphabet", "android", "chrome"],
+        "meta": ["meta", "facebook", "instagram", "whatsapp"],
+        "amazon": ["amazon", "aws", "alexa"],
+        "apple": ["apple", "ios", "macos", "iphone"],
+        "nvidia": ["nvidia", "cuda", "gpu"],
+        "github": ["github", "git", "repository"],
+        "anthropic": ["anthropic"],
+        "databricks": ["databricks"],
+        "huggingface": ["hugging face", "huggingface"],
+        "mit": ["mit", "massachusetts institute of technology"],
+        "stanford": ["stanford", "stanford university"],
+        "harvard": ["harvard", "harvard university"]
+      }
+    },
+    "outcomes": {
+      "description": "Research outcomes, impacts, and concepts",
+      "tags": {
+        "breakthrough": ["breakthrough", "innovation", "novel", "pioneering", "groundbreaking"],
+        "improvement": ["improvement", "enhancement", "optimization", "better performance"],
+        "discovery": ["discovery", "finding", "insight", "revelation", "new understanding"],
+        "validation": ["validation", "verification", "confirmation", "proof", "evidence"],
+        "collaboration": ["collaboration", "interdisciplinary", "partnership", "team", "joint research"],
+        "publication": ["publication", "paper", "journal", "conference", "proceedings"],
+        "patent": ["patent", "intellectual property", "invention", "innovation protection"],
+        "commercialization": ["commercialization", "startup", "spin-off", "technology transfer"],
+        "open-source": ["open source", "oss", "free software", "community"],
+        "startup": ["startup", "entrepreneur", "funding", "venture capital", "vc"],
+        "enterprise": ["enterprise", "business", "corporate", "b2b"],
+        "sustainability": ["sustainability", "green", "carbon", "environmental"],
+        "observability": ["observability", "monitoring", "telemetry"]
+      }
+    },
+    "events": {
+      "description": "Conferences, meetups, and webinars",
+      "tags": {
+        "conference": ["conference", "summit", "workshop", "webinar", "meetup"],
+        "cfp": ["cfp", "call for papers"],
+        "award": ["award", "competition"],
+        "keynote": ["keynote"],
+        "hackathon": ["hackathon"]
+      }
+    }
+  },
+  "patterns": {
+    "version_numbers": "\\bv?\\d+\\.\\d+(?:\\.\\d+)?\\b",
+    "funding_amounts": "\\$\\d+(?:\\.\\d+)?\\s*(million|billion|m|b)\\b",
+    "arxiv_papers": "\\barxiv:\\d{4}\\.\\d{4,5}\\b",
+    "doi": "\\b10\\.\\d{4,}/[\\w.-]+\\b",
+    "pmid": "\\bPMID:\\s*\\d+\\b",
+    "github_repos": "\\bgithub\\.com/[\\w-]+/[\\w-]+\\b",
+    "urls": "https?://[\\w.-]+\\.[a-z]{2,}(?:/\\S*)?",
+    "email": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b",
+    "hashtags": "#[A-Za-z0-9_]+",
+    "mentions": "@[A-Za-z0-9_]+",
+    "date_iso": "\\b\\d{4}-\\d{2}-\\d{2}\\b",
+    "code_block": "```[\\s\\S]*?```",
+    "inline_code": "`[^`]+`",
+    "gene_names": "\\b[A-Z][A-Z0-9]{2,}\\b",
+    "chemical_formulas": "\\b[A-Z][a-z]?\\d*(?:[A-Z][a-z]?\\d*)*\\b",
+    "statistical_significance": "\\bp\\s*[<>=]\\s*0\\.\\d+\\b",
+    "percentages": "\\b\\d+(?:\\.\\d+)?%\\b",
+    "institutions": "\\b(MIT|Harvard|Stanford|Berkeley|CMU|Caltech|Oxford|Cambridge|Google|Microsoft|OpenAI|Meta|Apple|Amazon)\\b"
+  }
+}
