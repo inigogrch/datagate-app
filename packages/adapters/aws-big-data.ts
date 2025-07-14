@@ -6,8 +6,7 @@ const AWS_BIG_DATA_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'AWS Big Data Blog',
   type: 'rss',
   endpoint_url: 'https://aws.amazon.com/blogs/big-data/feed/',
-  fetch_freq_min: 60,
-  row_category: 'tools_frameworks'
+  fetch_freq_min: 60
 }
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {

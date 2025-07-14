@@ -72,7 +72,7 @@ async function testSetup() {
   if (testsPass) {
     console.log('✅ All tests passed! DataGate is ready to use.')
     console.log('\nNext steps:')
-    console.log('1. Run "npm run ingest" to fetch dbt Labs posts')
+    console.log('1. Run "npm run ingest" to fetch content from external sources')
     console.log('2. Run "npm run dev" to start the app')
   } else {
     console.log('❌ Some tests failed. Please check your setup.')

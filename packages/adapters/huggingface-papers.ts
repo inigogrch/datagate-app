@@ -8,8 +8,7 @@ const HUGGINGFACE_PAPERS_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'HuggingFace Papers',
   type: 'web_scrape',
   endpoint_url: 'https://huggingface.co/papers',
-  fetch_freq_min: 30, // Papers update frequently - check every 30 minutes
-  row_category: 'research_updates'
+  fetch_freq_min: 30 // Papers update frequently - check every 30 minutes
 }
 
 // Rate limiting delay (1 second)
@@ -110,7 +109,7 @@ function createPaperUrl(title: string, baseUrl: string): string {
 }
 
 function extractTags(title: string, authors: string): string[] {
-  const tags = ['research updates', 'huggingface', 'ai research'] // Default tags
+  const tags = ['huggingface'] // Default tags
   
   // Add tags based on title content
   const titleLower = title.toLowerCase()
@@ -259,8 +258,38 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
           url,
           content,
           publishedAt,
+          summary: paperInfo.authors ? 
+            `${paperInfo.title} by ${paperInfo.authors}` : 
+            paperInfo.title,
+          author: paperInfo.submitter !== 'Unknown' ? paperInfo.submitter : undefined,
+          image_url: '/lib/images/hugging_face_logo.avif', // HuggingFace logo fallback
+          story_category: 'research',
           tags,
-          externalId
+          externalId,
+          originalMetadata: {
+            // HuggingFace paper metadata
+            hf_title: paperInfo.title,
+            hf_authors: paperInfo.authors,
+            hf_submitter: paperInfo.submitter,
+            hf_stats: paperInfo.stats,
+            hf_generated_url: url,
+            
+            // Processing metadata
+            content_word_count: content.split(/\s+/).length,
+            content_character_count: content.length,
+            processing_timestamp: new Date().toISOString(),
+            processing_source: 'HuggingFace Papers Scraper',
+            processing_endpoint: HUGGINGFACE_PAPERS_CONFIG.endpoint_url,
+            
+            // Content type
+            source_name: 'HuggingFace Papers',
+            content_type: 'research_paper',
+            publication_type: 'community_paper',
+            academic_source: true,
+            
+            // Raw paper info for complete preservation
+            raw_paper_info: paperInfo
+          }
         }
         
         items.push(item)

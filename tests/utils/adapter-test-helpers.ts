@@ -54,7 +54,34 @@ export function validateParsedItem(item: ParsedItem, index?: number): void {
     content: expect.any(String),
     publishedAt: expect.any(Date),
     tags: expect.any(Array),
+    externalId: expect.any(String),
   })
+  
+  // Optional fields should be string or undefined
+  if (item.summary !== undefined) {
+    expect(typeof item.summary).toBe('string')
+    expect(item.summary.length).toBeGreaterThan(0)
+  }
+  
+  if (item.author !== undefined) {
+    expect(typeof item.author).toBe('string')
+    expect(item.author.length).toBeGreaterThan(0)
+  }
+  
+  if (item.image_url !== undefined) {
+    expect(typeof item.image_url).toBe('string')
+    expect(item.image_url.length).toBeGreaterThan(0)
+    // Should be valid URL
+    try {
+      new URL(item.image_url)
+    } catch (error) {
+      throw new Error(`Invalid image URL "${item.image_url}"${itemContext}: ${error}`)
+    }
+  }
+  
+  if (item.story_category !== undefined) {
+    expect(['research', 'news', 'tools', 'analysis', 'tutorial', 'announcement']).toContain(item.story_category)
+  }
   
   // URL should be valid
   try {

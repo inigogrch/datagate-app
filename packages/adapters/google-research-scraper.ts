@@ -8,8 +8,7 @@ const GOOGLE_RESEARCH_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'Google AI Research Blog',
   type: 'web_scrape', // Web scraping adapter for Google Research Blog
   endpoint_url: 'https://research.google/blog/',
-  fetch_freq_min: 120, // Research posts are less frequent than news
-  row_category: 'research_updates'
+  fetch_freq_min: 120 // Research posts are less frequent than news
 }
 
 // Rate limiting delay (1 second as specified)
@@ -74,7 +73,7 @@ function parseDate(dateString: string): Date {
 }
 
 function extractTags($: any, cardElement: any): string[] {
-  const tags = ['research updates', 'google'] // Default tags
+  const tags = ['google'] // Default tags
   
   try {
     // Look for tags in .glue-card__link-list
@@ -213,8 +212,41 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
           url,
           content,
           publishedAt,
+          summary: content.length > 300 ? 
+            content.substring(0, 300).trim() + '...' : 
+            content.trim(),
+          author: undefined, // Google Research posts don't typically have individual authors
+          image_url: '/lib/images/google_research_logo.jpg', // Google Research logo fallback
+          story_category: 'research',
           tags,
-          externalId
+          externalId,
+          originalMetadata: {
+            // Google Research metadata
+            google_title: title,
+            google_url: url,
+            google_relative_url: relativeUrl,
+            google_date_text: dateText,
+            google_parsed_date: publishedAt.toISOString(),
+            google_extracted_tags: tags,
+            
+            // Processing metadata
+            content_word_count: content.split(/\s+/).length,
+            content_character_count: content.length,
+            processing_timestamp: new Date().toISOString(),
+            processing_source: 'Google Research Blog Scraper',
+            processing_endpoint: GOOGLE_RESEARCH_CONFIG.endpoint_url,
+            
+            // Content type
+            source_name: 'Google AI Research Blog',
+            content_type: 'research_blog_post',
+            publication_type: 'corporate_research',
+            academic_source: false,
+            research_organization: 'Google Research',
+            
+            // Scraping context
+            card_index: index,
+            total_cards_found: cards.length
+          }
         }
         
         items.push(item)

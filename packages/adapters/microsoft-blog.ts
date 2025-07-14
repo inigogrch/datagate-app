@@ -6,8 +6,7 @@ const MICROSOFT_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'Microsoft Excel & Power BI Blog',
   type: 'rss',
   endpoint_url: 'https://powerbi.microsoft.com/en-us/blog/feed/', // Will be updated to support multiple feeds
-  fetch_freq_min: 120,
-  row_category: 'tools_frameworks'
+  fetch_freq_min: 120
 }
 
 // Multiple Microsoft RSS feeds for comprehensive coverage
@@ -42,8 +41,7 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
         name: `Microsoft Excel & Power BI Blog - ${feed.name}`,
         type: 'rss',
         endpoint_url: feed.url,
-        fetch_freq_min: 120,
-        row_category: 'tools_frameworks'
+        fetch_freq_min: 120
       }
       
       const items = await genericRssAdapter(sourceConfig)

@@ -6,8 +6,7 @@ const PYPI_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'PyPI Top Packages',
   type: 'api',
   endpoint_url: 'https://pypi.org/pypi/', // Base URL, package names will be appended
-  fetch_freq_min: 180,
-  row_category: 'tools_frameworks'
+  fetch_freq_min: 180
 }
 
 // Top Python packages to monitor for new releases
@@ -22,7 +21,7 @@ const TOP_PACKAGES = [
   'django',        // Web framework
   'requests',      // HTTP library
   'tensorflow',    // Machine learning
-  'pytorch',       // Machine learning (note: actual package is 'torch')
+  'torch',         // Machine learning (PyTorch)
   'sqlalchemy',    // Database toolkit
   'fastapi',       // Modern web framework
   'streamlit',     // Data app framework
@@ -134,16 +133,63 @@ function createItemFromRelease(packageInfo: PyPIPackageInfo, version: string): P
   // Generate tags
   const tags = extractPackageTags(info)
   
-  // Create URL (prefer home_page, fallback to PyPI page)
-  const url = info.home_page || `https://pypi.org/project/${info.name}/`
+  // Create version-specific URL to avoid duplicates
+  const url = `https://pypi.org/project/${info.name}/${version}/`
   
   return {
     title: `${info.name} ${version} - ${info.summary}`,
     url,
     content,
     publishedAt,
+    summary: info.summary || `Latest release of ${info.name} Python package`,
+    author: info.author || info.author_email || undefined,
+    image_url: '/lib/images/pypi_logo.jpg', // PyPI logo fallback
+    story_category: 'tools',
     tags,
-    externalId: `${info.name}@${version}`
+    externalId: `${info.name}@${version}`,
+    originalMetadata: {
+      // PyPI package metadata
+      pypi_name: info.name,
+      pypi_version: version,
+      pypi_summary: info.summary,
+      pypi_description: info.description,
+      pypi_author: info.author,
+      pypi_author_email: info.author_email,
+      pypi_home_page: info.home_page,
+      pypi_project_urls: info.project_urls,
+      pypi_classifiers: info.classifiers,
+      pypi_keywords: info.keywords,
+      pypi_license: info.license,
+      pypi_package_url: info.package_url,
+      pypi_project_url: info.project_url,
+      pypi_release_url: info.release_url,
+      pypi_requires_dist: info.requires_dist,
+      pypi_requires_python: info.requires_python,
+      pypi_yanked: info.yanked,
+      pypi_yanked_reason: info.yanked_reason,
+      
+      // Release file metadata
+      pypi_release_files: releaseFiles,
+      pypi_upload_time: latestFile.upload_time,
+      pypi_upload_time_iso: latestFile.upload_time_iso_8601,
+      pypi_file_size: latestFile.size,
+      pypi_python_version: latestFile.python_version,
+      pypi_package_type: latestFile.packagetype,
+      
+      // Processing metadata
+      content_word_count: content.split(/\s+/).length,
+      content_character_count: content.length,
+      processing_timestamp: new Date().toISOString(),
+      processing_source: 'PyPI API',
+      
+      // Content type
+      source_name: 'PyPI Top Packages',
+      content_type: 'package_release',
+      package_ecosystem: 'python',
+      
+      // Raw package info for complete preservation
+      raw_pypi_package_info: packageInfo
+    }
   }
 }
 
@@ -214,7 +260,7 @@ function createPackageContent(info: any, version: string, releaseFiles: any[]): 
 }
 
 function extractPackageTags(info: any): string[] {
-  const tags = ['tools frameworks', 'python']
+  const tags = ['python'] // Default tags
   
   // Add tags based on classifiers
   const classifiers = info.classifiers || []

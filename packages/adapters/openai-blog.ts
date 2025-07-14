@@ -6,8 +6,7 @@ const OPENAI_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'OpenAI Official Blog',
   type: 'rss',
   endpoint_url: 'https://openai.com/news/rss.xml',
-  fetch_freq_min: 60,
-  row_category: 'tools_frameworks'
+  fetch_freq_min: 60
 }
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
