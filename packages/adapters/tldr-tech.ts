@@ -203,17 +203,15 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
       const urlHash = crypto.createHash('md5').update(story.url).digest('hex').substring(0, 8)
       const externalId = `tldr-${urlHash}`
       
-      // Build content
-      const content = [
-        `# ${story.title}`,
-        '',
-        `**Category:** ${story.category}`,
-        story.readTime ? `**Read Time:** ${story.readTime}` : '',
-        '',
+      // Build clean text content without markdown formatting
+      const contentParts = [
+        `Category: ${story.category}.`,
+        ...(story.readTime ? [`Read Time: ${story.readTime}.`] : []),
         story.summary,
-        '',
-        `**Source:** [${story.title}](${story.url})`
-      ].filter(Boolean).join('\n')
+        `Source: ${story.url}`
+      ].filter(Boolean)
+      
+      const content = contentParts.join(' ')
       
       // Generate tags based on category and content
       const tags = [

@@ -1,5 +1,5 @@
 import { SourceConfig, ParsedItem } from '../../lib/adapters/types'
-import { genericRssAdapter } from '../../lib/adapters/generic-rss'
+import { fetchAndParseGenericRss } from '../../lib/adapters/generic-rss'
 
 // MIT Sloan Management Review RSS configuration
 const MIT_SLOAN_CONFIG: Omit<SourceConfig, 'id'> = {
@@ -11,19 +11,11 @@ const MIT_SLOAN_CONFIG: Omit<SourceConfig, 'id'> = {
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
   console.log('[MIT Sloan] Starting fetch from MIT Sloan Management Review RSS feed')
-  
-  // Create source config for MIT Sloan
-  const sourceConfig: SourceConfig = {
-    id: 'mit-sloan',
-    ...MIT_SLOAN_CONFIG
-  }
-  
   try {
-    const items = await genericRssAdapter(sourceConfig)
+    const items = await fetchAndParseGenericRss(MIT_SLOAN_CONFIG)
     console.log(`[MIT Sloan] Found ${items.length} items`)
-    
     // Add MIT Sloan-specific tags and enhance metadata
-    const enhancedItems = items.map(item => ({
+    const enhancedItems = items.map((item: ParsedItem) => ({
       ...item,
       tags: [...new Set([
         ...item.tags,
@@ -46,18 +38,13 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
         academic_source: true
       }
     }))
-    
     // Sort by publish date (newest first)
-    enhancedItems.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
-    
+    enhancedItems.sort((a: ParsedItem, b: ParsedItem) => b.publishedAt.getTime() - a.publishedAt.getTime())
     console.log(`[MIT Sloan] Successfully processed ${enhancedItems.length} management and strategy articles`)
     return enhancedItems
-    
   } catch (error) {
     console.error('[MIT Sloan] Error fetching articles:', error)
     throw error
   }
 }
-
-// Export config for registration in database
 export { MIT_SLOAN_CONFIG } 

@@ -1,5 +1,5 @@
 import { SourceConfig, ParsedItem } from '../../lib/adapters/types'
-import { genericRssAdapter } from '../../lib/adapters/generic-rss'
+import { fetchAndParseGenericRss } from '../../lib/adapters/generic-rss'
 
 // ArsTechnica RSS configuration
 const ARSTECHNICA_CONFIG: Omit<SourceConfig, 'id'> = {
@@ -11,23 +11,14 @@ const ARSTECHNICA_CONFIG: Omit<SourceConfig, 'id'> = {
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
   console.log('[Ars Technica] Starting fetch from Ars Technica RSS feed')
-  
-  // Create source config for Ars Technica
-  const sourceConfig: SourceConfig = {
-    id: 'arstechnica',
-    ...ARSTECHNICA_CONFIG
-  }
-  
   try {
-    const items = await genericRssAdapter(sourceConfig)
+    const items = await fetchAndParseGenericRss(ARSTECHNICA_CONFIG)
     console.log(`[Ars Technica] Found ${items.length} items`)
-    
     // Add Ars Technica-specific tags and enhance metadata
-    const enhancedItems = items.map(item => {
+    const enhancedItems = items.map((item: ParsedItem) => {
       // Determine content category based on title and content
       const title = item.title.toLowerCase()
       const content = item.content.toLowerCase()
-      
       // Categorize content
       const categories = []
       if (title.includes('ai') || content.includes('artificial intelligence') || title.includes('machine learning')) {
@@ -54,7 +45,6 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
       if (title.includes('cars') || title.includes('automotive') || title.includes('electric vehicle')) {
         categories.push('automotive', 'transportation')
       }
-      
       return {
         ...item,
         tags: [...new Set([
@@ -69,24 +59,21 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
           'technical-depth',
           ...categories
         ])],
-                 originalMetadata: {
-           ...item.originalMetadata,
-           source_name: 'Ars Technica',
-           content_type: 'tech_journalism',
-           publication: 'ars_technica',
-           editorial_quality: 'high',
-           technical_depth: 'deep',
-           journalistic_standards: 'professional'
-         }
+        originalMetadata: {
+          ...item.originalMetadata,
+          source_name: 'Ars Technica',
+          content_type: 'tech_journalism',
+          publication: 'ars_technica',
+          editorial_quality: 'high',
+          technical_depth: 'deep',
+          journalistic_standards: 'professional'
+        }
       }
     })
-    
     // Sort by publish date (newest first)
-    enhancedItems.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
-    
+    enhancedItems.sort((a: ParsedItem, b: ParsedItem) => b.publishedAt.getTime() - a.publishedAt.getTime())
     console.log(`[Ars Technica] Successfully processed ${enhancedItems.length} tech journalism articles`)
     return enhancedItems
-    
   } catch (error) {
     console.error('[Ars Technica] Error fetching articles:', error)
     throw error

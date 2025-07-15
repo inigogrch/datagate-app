@@ -176,15 +176,15 @@ async function validateAdapter(adapter: AdapterTest): Promise<ValidationResult> 
   return result
 }
 
-async function validateAllAdapters() {
-  console.log(`🚀 Wave 1 Enhanced Adapter Validation (${ADAPTERS.length} Adapters)`)
+async function validateAdapters(adaptersToTest: AdapterTest[] = ADAPTERS) {
+  console.log(`🚀 Wave 1 Enhanced Adapter Validation (${adaptersToTest.length} Adapters)`)
   console.log('=' + '='.repeat(60))
   console.log()
   
   const results: ValidationResult[] = []
   let totalDuration = 0
   
-  for (const adapter of ADAPTERS) {
+  for (const adapter of adaptersToTest) {
     const result = await validateAdapter(adapter)
     results.push(result)
     totalDuration += result.duration
@@ -285,5 +285,36 @@ async function validateAllAdapters() {
   }
 }
 
+// Convenience function for backward compatibility
+async function validateAllAdapters() {
+  return validateAdapters(ADAPTERS)
+}
+
+// Handle command line arguments
+const targetAdapter = process.argv[2]
+
+async function main() {
+  if (targetAdapter) {
+    // Filter to specific adapter
+    const filteredAdapters = ADAPTERS.filter(adapter => 
+      adapter.name.toLowerCase().includes(targetAdapter.toLowerCase()) ||
+      adapter.name.toLowerCase().replace(/[^a-z]/g, '').includes(targetAdapter.toLowerCase().replace(/[^a-z]/g, ''))
+    )
+    
+    if (filteredAdapters.length === 0) {
+      console.error(`❌ No adapter found matching "${targetAdapter}"`)
+      console.log('\nAvailable adapters:')
+      ADAPTERS.forEach(adapter => console.log(`  • ${adapter.name}`))
+      process.exit(1)
+    }
+    
+    console.log(`🔍 Testing specific adapter: ${filteredAdapters[0].name}`)
+    await validateAdapters(filteredAdapters)
+  } else {
+    // Run all adapters
+    await validateAdapters()
+  }
+}
+
 // Run validation
-validateAllAdapters().catch(console.error) 
+main().catch(console.error) 
