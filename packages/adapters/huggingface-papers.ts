@@ -144,25 +144,19 @@ function extractTags(title: string, authors: string): string[] {
 }
 
 function createPaperContent(title: string, authors: string, submitter: string, stats: string, url: string): string {
-  const lines = [
-    `# ${title}`,
-    '',
-    `**Authors:** ${authors || 'Multiple authors'}`,
-    `**Submitted by:** ${submitter}`,
-    ...(stats ? [`**Engagement:** ${stats}`] : []),
-    '',
-    `This research paper is currently trending on HuggingFace Papers, indicating high interest from the AI research community.`,
-    '',
-    `**Source:** HuggingFace Papers - Daily trending research`,
-    `**Category:** AI/ML Research`,
-    '',
-    `[View Paper](${url})`,
-    '',
-    `---`,
-    `*This paper was selected as trending research on HuggingFace Papers, representing cutting-edge developments in artificial intelligence and machine learning.*`
+  // Create clean text content without markdown formatting
+  const contentParts = [
+    `Authors: ${authors || 'Multiple authors'}.`,
+    `Submitted by: ${submitter}.`,
+    ...(stats ? [`Engagement: ${stats}.`] : []),
+    'This research paper is currently trending on HuggingFace Papers, indicating high interest from the AI research community.',
+    'Source: HuggingFace Papers - Daily trending research.',
+    'Category: AI/ML Research.',
+    `View the paper at ${url}`,
+    'This paper was selected as trending research on HuggingFace Papers, representing cutting-edge developments in artificial intelligence and machine learning.'
   ]
   
-  return lines.join('\n')
+  return contentParts.join(' ')
 }
 
 function createExternalId(title: string, submitter: string): string {

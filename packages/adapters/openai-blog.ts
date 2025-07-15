@@ -1,8 +1,8 @@
 import { SourceConfig, ParsedItem } from '../../lib/adapters/types'
-import { genericRssAdapter } from '../../lib/adapters/generic-rss'
+import { fetchAndParseGenericRss } from '../../lib/adapters/generic-rss'
 
-// OpenAI Official Blog specific configuration
-const OPENAI_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
+// OpenAI Blog specific configuration
+const OPENAI_CONFIG: Omit<SourceConfig, 'id'> = {
   name: 'OpenAI Official Blog',
   type: 'rss',
   endpoint_url: 'https://openai.com/news/rss.xml',
@@ -10,14 +10,36 @@ const OPENAI_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
 }
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
-  // Create a mock source config for the adapter
-  const sourceConfig: SourceConfig = {
-    id: 'openai-blog', // This will be replaced with actual DB ID
-    ...OPENAI_BLOG_CONFIG
+  console.log('[OpenAI Blog] Starting raw metadata extraction from OpenAI RSS feed')
+  
+  try {
+    // Use generic RSS adapter to extract all raw metadata
+    const items = await fetchAndParseGenericRss(OPENAI_CONFIG)
+    
+    // Add OpenAI-specific metadata to originalMetadata
+    const enhancedItems = items.map(item => ({
+      ...item,
+      originalMetadata: {
+        ...item.originalMetadata,
+        // OpenAI-specific context
+        platform: 'openai',
+        publication_type: 'official_announcements',
+        content_focus: 'ai_research_product_updates',
+        geographic_focus: 'global_ai_industry',
+        publication_frequency: 'irregular',
+        article_format: 'announcements_research_updates',
+        organization_type: 'ai_research_company'
+      }
+    }))
+    
+    console.log(`[OpenAI Blog] Successfully extracted ${enhancedItems.length} raw articles`)
+    return enhancedItems
+    
+  } catch (error) {
+    console.error('[OpenAI Blog] Error extracting raw metadata:', error)
+    throw error
   }
-
-  return await genericRssAdapter(sourceConfig)
 }
 
 // Export config for registration in database
-export { OPENAI_BLOG_CONFIG } 
+export { OPENAI_CONFIG } 

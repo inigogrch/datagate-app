@@ -1,5 +1,5 @@
 import { SourceConfig, ParsedItem } from '../../lib/adapters/types'
-import { genericRssAdapter } from '../../lib/adapters/generic-rss'
+import { fetchAndParseGenericRss } from '../../lib/adapters/generic-rss'
 
 // VentureBeat RSS configuration
 const VENTUREBEAT_CONFIG: Omit<SourceConfig, 'id'> = {
@@ -11,19 +11,11 @@ const VENTUREBEAT_CONFIG: Omit<SourceConfig, 'id'> = {
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
   console.log('[VentureBeat] Starting fetch from VentureBeat RSS feed')
-  
-  // Create source config for VentureBeat
-  const sourceConfig: SourceConfig = {
-    id: 'venturebeat',
-    ...VENTUREBEAT_CONFIG
-  }
-  
   try {
-    const items = await genericRssAdapter(sourceConfig)
+    const items = await fetchAndParseGenericRss(VENTUREBEAT_CONFIG)
     console.log(`[VentureBeat] Found ${items.length} items`)
-    
     // Add VentureBeat-specific tags and enhance metadata
-    const enhancedItems = items.map(item => ({
+    const enhancedItems = items.map((item: ParsedItem) => ({
       ...item,
       tags: [...new Set([
         ...item.tags,
@@ -46,20 +38,14 @@ export async function fetchAndParse(): Promise<ParsedItem[]> {
         publication: 'venturebeat'
       }
     }))
-    
     // Sort by publish date (newest first)
-    enhancedItems.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
-    
+    enhancedItems.sort((a: ParsedItem, b: ParsedItem) => b.publishedAt.getTime() - a.publishedAt.getTime())
     console.log(`[VentureBeat] Successfully processed ${enhancedItems.length} tech news articles`)
     return enhancedItems
-    
   } catch (error) {
     console.error('[VentureBeat] Error fetching tech news:', error)
     throw error
   }
 }
-
-// Export config for registration in database
 export { VENTUREBEAT_CONFIG }
-// Keep backwards compatibility
 export { VENTUREBEAT_CONFIG as AI_NEWS_CONFIG, VENTUREBEAT_CONFIG as INSIDE_AI_CONFIG } 

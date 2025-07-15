@@ -1,5 +1,5 @@
 import { SourceConfig, ParsedItem } from '../../lib/adapters/types'
-import { genericRssAdapter } from '../../lib/adapters/generic-rss'
+import { fetchAndParseGenericRss } from '../../lib/adapters/generic-rss'
 
 // Microsoft multi-feed configuration
 const MICROSOFT_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
@@ -9,7 +9,6 @@ const MICROSOFT_BLOG_CONFIG: Omit<SourceConfig, 'id'> = {
   fetch_freq_min: 120
 }
 
-// Multiple Microsoft RSS feeds for comprehensive coverage
 const MICROSOFT_FEEDS = [
   {
     name: 'Power BI Blog',
@@ -30,41 +29,27 @@ const MICROSOFT_FEEDS = [
 
 export async function fetchAndParse(): Promise<ParsedItem[]> {
   const allItems: ParsedItem[] = []
-  
-  // Fetch from all Microsoft feeds
   for (const feed of MICROSOFT_FEEDS) {
     try {
       console.log(`[Microsoft Adapter] Fetching from ${feed.name}...`)
-      
-      const sourceConfig: SourceConfig = {
-        id: 'microsoft-blog',
+      const items = await fetchAndParseGenericRss({
         name: `Microsoft Excel & Power BI Blog - ${feed.name}`,
         type: 'rss',
         endpoint_url: feed.url,
         fetch_freq_min: 120
-      }
-      
-      const items = await genericRssAdapter(sourceConfig)
+      })
       console.log(`[Microsoft Adapter] Got ${items.length} items from ${feed.name}`)
-      
       allItems.push(...items)
     } catch (error) {
       console.error(`[Microsoft Adapter] Failed to fetch from ${feed.name}:`, error)
-      // Continue with other feeds even if one fails
     }
   }
-  
   // Remove duplicates by URL and sort by date
   const uniqueItems = Array.from(
-    new Map(allItems.map(item => [item.url, item])).values()
+    new Map(allItems.map((item: ParsedItem) => [item.url, item])).values()
   )
-  
-  uniqueItems.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime())
-  
+  uniqueItems.sort((a: ParsedItem, b: ParsedItem) => b.publishedAt.getTime() - a.publishedAt.getTime())
   console.log(`[Microsoft Adapter] Combined ${uniqueItems.length} unique items from ${MICROSOFT_FEEDS.length} feeds`)
-  
   return uniqueItems
 }
-
-// Export config for registration in database
 export { MICROSOFT_BLOG_CONFIG } 

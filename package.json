@@ -20,6 +20,7 @@
     "inspect:db": "tsx scripts/utils/inspect-database.ts",
     "validate:metadata": "tsx scripts/utils/validate-metadata-completeness.ts",
     "backfill:embeddings": "tsx scripts/utils/backfill-embeddings.ts",
+    "clean:content": "tsx scripts/utils/clean-content-and-regenerate-embeddings.ts",
     "migrate:external-id": "tsx scripts/migrations/run-external-id-migration.ts",
     "db:reset": "echo '⚠️  Run supabase/migrations/000_reset_database.sql in your Supabase SQL editor to reset database'",
     "db:finalize": "echo '✅ Run supabase/migrations/008_finalize_production_schema.sql in your Supabase SQL editor to create final schema'",
